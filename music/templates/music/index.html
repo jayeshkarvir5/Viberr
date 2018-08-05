@@ -1,0 +1,39 @@
+
+{% extends 'music\base.html' %}
+
+{% block title %}Viberr{% endblock %}
+{% block body %}
+    {% if all_albums %}
+        <h3>Here are all albums:</h3>
+        <div class="row">
+        {% for album in all_albums %}
+        <div class="col-sm-3">
+         <div class="card" style="width: 18rem;">
+           <img class="card-img-top" src="{{ album.album_logo.url }}" style="height: 18rem;">
+           <div class="card-body">
+          <h5 class="card-title">{{ album.album_title }}</h5>
+          <p class="card-text">{{ album.artist }}</p>
+          <a href="{% url 'music:detail' album.id %}" class="btn btn-primary">View Details</a>
+          <form action="{% url 'music:album-delete' album.id %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <input type="hidden" name="album_id" value="{{ album.id }}" />
+            <button class="btn btn-light btn-sm" type="submit" >
+              <i class="fas fa-trash"></i></button>
+          </form>
+        </div>
+        </div>
+        </div>
+        {% endfor %}
+      </div>
+    {% else %}
+        <h3>You don't have any albums</h3>
+    {% endif %}
+{% endblock %}
+<!--
+<ul>
+  {% for album in all_albums %}
+  --object_list if you don't use context_object_name var--
+  --<li><a href="/music/{{ album.id }}/">{{ album.album_title }}</a></li>--
+  <li><a href="{% url 'music:detail' album.id %}">{{ album.album_title }}</a></li>
+  {% endfor %}
+</ul>-->
